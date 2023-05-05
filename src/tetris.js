@@ -103,18 +103,17 @@ $(function(){
 		gameSetting.gameField = $('.gameField');
 		GameControl.init(setting);
 
-		GameControl.panel.find('.arrow').css({'width':'9vw', 'height': '9vw'});
-		GameControl.panel.find('.controlBtn').css({
-			'width':'9vw', 
-			'height': '9vw',
-			'line-height': '9vw',
-			'border-radius': '3vw'
-		});
-		GameControl.panel.find('.btnRow.row1').css({
-			'bottom':'16.1vw'
-		});
-
 		if (usingMobile) {
+			GameControl.panel.find('.arrow').css({'width':'9vw', 'height': '9vw'});
+			GameControl.panel.find('.controlBtn').css({
+				'width':'9vw', 
+				'height': '9vw',
+				'line-height': '9vw',
+				'border-radius': '3vw'
+			});
+			GameControl.panel.find('.btnRow.row1').css({
+				'bottom':'16.1vw'
+			});
 			$('.controlSec').addClass('inMob');
 			if (screen.orientation.type === 'portrait-primary') {
 				alert('Note: Play in landscape (horizontal) mode for better experience');
