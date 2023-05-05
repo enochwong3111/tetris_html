@@ -760,7 +760,7 @@ $(function(){
 			tmp++;
 		}
 		if (tmp > curlevel) {
-			curSpeed = curlevel = parseInt(tmp);
+			curSpeed = curlevel = Math.ceil(tmp);
 			$('[data-for="speed"]').text(curSpeed);
 			initSpeed = curSpeed;
 			$('[data-for="level"]').text(curlevel);
