@@ -1,0 +1,402 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+}
+
+.title{
+    height: 125px;
+    transform: translate(5px, 5px);
+}
+.gameField{
+    width: 280px;
+    height: 440px;
+    border: solid;
+    border-width: 1px;
+    border-color: #5ef15e;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyMCcgaGVpZ2h0PScyMCc+PHJlY3QgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyBzdHJva2Utd2lkdGg9JzInIGlkPSdzdmdfMScgaGVpZ2h0PScyMCcgb3BhY2l0eT0nMC4xJyB3aWR0aD0nMjAnIHk9JzAnIHg9JzAnIHN0cm9rZT0nIzMwMzAzMCcgZmlsbD0nI2ZmZmZmZicvPjwvc3ZnPiA=");
+}
+
+.section{
+    border: solid 1px grey;
+    border-top: none;
+    width: 110px;
+    background-color: rgb(177, 247, 206);
+}
+
+.rightPanel .section {
+    min-height: 70px;
+}
+
+.controlSec .secContent {
+    padding-left: 2px;
+}
+
+.scoreBoard .secContent, .speedInfo .secContent, .levelInfo .secContent{
+    text-align: center;
+    padding: 2px;
+    font-size: xx-large;
+    padding-top: 4px;
+}
+
+.scoreRanking.section {
+    height: 221px;
+}
+
+.scoreRanking .secContent{
+    padding-inline-start: 25px;
+    font-size: 19px;
+    margin: 5px;
+    line-height: 30px;
+}
+
+.field .section:first-child{
+    border: solid 1px grey;
+}
+
+.storeArea{
+    min-height: 80px;
+}
+
+.nextBlocks{
+    min-height: 196px;
+}
+
+.displayBlock{
+    border: solid 1px #dde5ed;
+    width: 80px;
+    height: 50px;
+    position: relative;
+    display: block;
+    margin-top: 5px;
+    margin-left: 13px;
+    margin-bottom: 5px;
+    background-color: rgb(255 255 255 / 60%);
+}
+
+.displayBlock > div{
+    transform: scale(0.8);
+}
+
+.storeArea .displayBlock {
+    display: none;
+}
+
+.field {
+    display: flex;
+}
+
+.falling{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+}
+.sampleSquare{
+    position: absolute;
+    top: 10px;
+    left: 25px;
+}
+.sampleSquare .s2{
+    left: 20px;
+}
+.sampleSquare .s3{
+    top: 20px;
+}
+.sampleSquare .s4{
+    top: 20px;
+    left: 20px;
+}
+
+.smapleLine{
+    position: absolute;
+    top: 17px;
+    left: 7px;
+}
+.smapleLine .l2{
+    left: 20px;
+}
+.smapleLine .l3{
+    left: 40px;
+}
+.smapleLine .l4{
+    left: 60px;
+}
+
+.sampleTShape{
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    /*width: 60px;
+    height: 40px;*/
+}
+.sampleTShape .t2{
+    left: 20px;
+}
+.sampleTShape .t3{
+    left: 40px;
+}
+.sampleTShape .t4{
+    top: 20px;
+    left: 20px;
+}
+
+.sampleLShape{
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    /*width: 60px;
+    height: 40px;*/
+}
+.sampleLShape .l2{
+    left: 20px;
+}
+.sampleLShape .l3{
+    left: 40px;
+}
+.sampleLShape .l4{
+    top: 20px;
+}
+
+.sampleRShape{
+    position: absolute;
+    top: 12px;
+    left: 16px;
+}
+.sampleRShape .r2{
+    left: 20px;
+}
+.sampleRShape .r3{
+    left: 40px;
+}
+.sampleRShape .r4{
+    top: 20px;
+    left: 40px;
+}
+
+.sampleZShape{
+    position: absolute;
+    top: 12px;
+    left: 16px;
+}
+.sampleZShape .z2{
+    left: 20px;
+}
+.sampleZShape .z3{
+    top: 20px;
+    left: 20px;
+}
+.sampleZShape .z4{
+    top: 20px;
+    left: 40px;
+}
+
+.sampleRZShape{
+    position: absolute;
+    top: 12px;
+    left: 16px;
+}
+.sampleRZShape .rz1{
+    left: 20px;
+}
+.sampleRZShape .rz2{
+    left: 40px;
+}
+.sampleRZShape .rz3{
+    top: 20px;
+}
+.sampleRZShape .rz4{
+    top: 20px;
+    left: 20px;
+}
+
+.boxPart{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    display: inline-block;
+    float: left;
+}
+.innerBox{
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+}
+.boxPart.blue{
+    background-color: #0000ff;
+}
+.blue .innerBox{
+    background-color: #6869ff;
+}
+.boxPart.orange{
+    background-color: #ff8400;
+}
+.orange .innerBox{
+    background-color: #ffa444;
+}
+.boxPart.yellow{
+    background-color: #e4e468;
+}
+.yellow .innerBox{
+    background-color: #f7e861;
+}
+.boxPart.green{
+     background-color: #5dff00;
+ }
+.green .innerBox{
+    background-color: #1cff65;
+}
+.boxPart.lightBlue{
+    background-color: #00f3f7;
+}
+.lightBlue .innerBox{
+    background-color: #76fffa;
+}
+.boxPart.purple{
+    background-color: #9a00fb;
+}
+.purple .innerBox{
+    background-color: #e460ff;
+}
+.boxPart.red{
+    background-color: #ff0000;
+}
+.red .innerBox{
+    background-color: #ff626b;
+}
+
+.hidden{
+    display: none;
+}
+.gameEnd{
+    font-size: 60px;
+    text-align: center;
+    color: #d61d1d;
+}
+.endingPopUp{
+    user-select: none;
+    border: solid;
+    border-radius: 16px;
+    background-color: #f7d8aa;
+    border-color: #f5ce93;
+    top: -50%;
+    position: relative;
+    /* display: none; */
+}
+.restart{
+    text-align: center;
+    border: solid;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-width: 2px;
+    color: cornflowerblue;
+    border-radius: 16px;
+    margin-top: 0px;
+    font-weight: bolder;
+    width: 126px;
+    position: relative;
+    left: 50%;
+    background-color: white;
+    cursor: pointer;
+    box-shadow: 0 5px #999;
+    transform: translate(-75px, 0px);
+}
+.restart:active {
+  background-color: #eaeae9;
+  box-shadow: 0 2px #666;
+  transform: translate(-75px, 4px);
+}
+.restart:hover{
+    color: #9f00ff;
+}
+
+.levelBoard{
+    display: inline-block;
+    float: right;
+}
+
+.cave{
+    position: relative;
+    color: #ff1e1e;
+    opacity: 0.6;
+    top: 471px;
+    border: solid 3.02px;
+    height: 17px;
+    width: 14px;
+    display: none;
+    border-bottom: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.cbLine{
+    display: inline-block;
+    float: right;
+    border: solid 1px black;
+    height: 35px;
+    width: 200px;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+.cbLine span{
+    background: #62c4ff;
+    display: block;
+    height: 35px;
+    width: 0px;
+}
+
+.title .boxPart{
+    width: 15px;
+    height: 15px;
+}
+.title .innerBox{
+    top: 3px;
+    left: 3px;
+    width: 9px;
+    height: 9px;
+}
+
+.leftPanel, .rightPanel {
+    border: solid 1px;
+    padding: 2px;
+    height: fit-content;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.pauseNoti {
+    position: absolute;
+    top: 30%;
+    background: #c5c5c5;
+    font-size: xxx-large;
+    opacity: 0.6;
+    text-align: center;
+    color: white;
+    display: none;
+}
+
+.gamePaused .pauseNoti {
+    display: block;
+}
+
+.controlSec .secContent.mobVer {
+    display: none;
+}
+
+.controlSec.inMob .secContent.pcVer {
+    display: none;
+}
+
+.controlSec.inMob .secContent.mobVer {
+    display: block;
+}
+
+.playground {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}

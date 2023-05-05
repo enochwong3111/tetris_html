@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=0.6" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src = "../game_control_js/src/gameControl.js"></script>
+    <script src = "./src/tetris.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/tetris.css">
+    <link rel="stylesheet" type="text/css" href="../game_control_js/css/gameControlMob.css">
+    <title>Tetris</title>
+    <head>
+<body>
+    <div class="playground">
+        <div class = "title" data-for="title"></div>
+        <div class ="hidden">
+            <div class="displayBlock">
+                <div class="smapleLine">
+                    <div class="boxPart lightBlue l1"><div class="innerBox"></div></div>
+                    <div class="boxPart lightBlue l2"><div class="innerBox"></div></div>
+                    <div class="boxPart lightBlue l3"><div class="innerBox"></div></div>
+                    <div class="boxPart lightBlue l4"><div class="innerBox"></div></div>
+                </div>
+            </div>
+            <div class="displayBlock">
+                <div class="sampleSquare">
+                    <div class="boxPart orange s1"><div class="innerBox"></div></div>
+                    <div class="boxPart orange s2"><div class="innerBox"></div></div>
+                    <div class="boxPart orange s3"><div class="innerBox"></div></div>
+                    <div class="boxPart orange s4"><div class="innerBox"></div></div>
+                </div>
+            </div>
+            <div class="displayBlock">
+                <div class="sampleTShape">
+                    <div class="boxPart purple t1"><div class="innerBox"></div></div>
+                    <div class="boxPart purple t2"><div class="innerBox"></div></div>
+                    <div class="boxPart purple t3"><div class="innerBox"></div></div>
+                    <div class="boxPart purple t4"><div class="innerBox"></div></div>
+                </div>
+            </div>
+            <div class="displayBlock">
+                <div class="sampleLShape">
+                    <div class="boxPart blue l1"><div class="innerBox"></div></div>
+                    <div class="boxPart blue l2"><div class="innerBox"></div></div>
+                    <div class="boxPart blue l3"><div class="innerBox"></div></div>
+                    <div class="boxPart blue l4"><div class="innerBox"></div></div>
+                </div>
+            </div>
+            <div class="displayBlock">
+                <div class="sampleRShape">
+                    <div class="boxPart red r1"><div class="innerBox"></div></div>
+                    <div class="boxPart red r2"><div class="innerBox"></div></div>
+                    <div class="boxPart red r3"><div class="innerBox"></div></div>
+                    <div class="boxPart red r4"><div class="innerBox"></div></div>
+                </div>
+            </div>
+            <div class="displayBlock">
+                <div class="sampleZShape">
+                    <div class="boxPart yellow z1"><div class="innerBox"></div></div>
+                    <div class="boxPart yellow z2"><div class="innerBox"></div></div>
+                    <div class="boxPart yellow z3"><div class="innerBox"></div></div>
+                    <div class="boxPart yellow z4"><div class="innerBox"></div></div>
+                </div>
+            </div>
+            <div class="displayBlock">
+                <div class="sampleRZShape">
+                    <div class="boxPart green rz1"><div class="innerBox"></div></div>
+                    <div class="boxPart green rz2"><div class="innerBox"></div></div>
+                    <div class="boxPart green rz3"><div class="innerBox"></div></div>
+                    <div class="boxPart green rz4"><div class="innerBox"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="leftPanel">
+                <div class="section storeArea">
+                    <div class="secTitle">Stored:</div>
+                    <div class="displayBlock t1">
+                        <div class="smapleLine">
+                            <div class="boxPart lightBlue l1"><div class="innerBox"></div></div>
+                            <div class="boxPart lightBlue l2"><div class="innerBox"></div></div>
+                            <div class="boxPart lightBlue l3"><div class="innerBox"></div></div>
+                            <div class="boxPart lightBlue l4"><div class="innerBox"></div></div>
+                        </div>
+                    </div>
+                    <div class="displayBlock t2">
+                        <div class="sampleSquare">
+                            <div class="boxPart orange s1"><div class="innerBox"></div></div>
+                            <div class="boxPart orange s2"><div class="innerBox"></div></div>
+                            <div class="boxPart orange s3"><div class="innerBox"></div></div>
+                            <div class="boxPart orange s4"><div class="innerBox"></div></div>
+                        </div>
+                    </div>
+                    <div class="displayBlock t3">
+                        <div class="sampleTShape">
+                            <div class="boxPart purple t1"><div class="innerBox"></div></div>
+                            <div class="boxPart purple t2"><div class="innerBox"></div></div>
+                            <div class="boxPart purple t3"><div class="innerBox"></div></div>
+                            <div class="boxPart purple t4"><div class="innerBox"></div></div>
+                        </div>
+                    </div>
+                    <div class="displayBlock t4">
+                        <div class="sampleLShape">
+                            <div class="boxPart blue l1"><div class="innerBox"></div></div>
+                            <div class="boxPart blue l2"><div class="innerBox"></div></div>
+                            <div class="boxPart blue l3"><div class="innerBox"></div></div>
+                            <div class="boxPart blue l4"><div class="innerBox"></div></div>
+                        </div>
+                    </div>
+                    <div class="displayBlock t5">
+                        <div class="sampleRShape">
+                            <div class="boxPart red r1"><div class="innerBox"></div></div>
+                            <div class="boxPart red r2"><div class="innerBox"></div></div>
+                            <div class="boxPart red r3"><div class="innerBox"></div></div>
+                            <div class="boxPart red r4"><div class="innerBox"></div></div>
+                        </div>
+                    </div>
+                    <div class="displayBlock t6">
+                        <div class="sampleZShape">
+                            <div class="boxPart yellow z1"><div class="innerBox"></div></div>
+                            <div class="boxPart yellow z2"><div class="innerBox"></div></div>
+                            <div class="boxPart yellow z3"><div class="innerBox"></div></div>
+                            <div class="boxPart yellow z4"><div class="innerBox"></div></div>
+                        </div>
+                    </div>
+                    <div class="displayBlock t7">
+                        <div class="sampleRZShape">
+                            <div class="boxPart green rz1"><div class="innerBox"></div></div>
+                            <div class="boxPart green rz2"><div class="innerBox"></div></div>
+                            <div class="boxPart green rz3"><div class="innerBox"></div></div>
+                            <div class="boxPart green rz4"><div class="innerBox"></div></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section nextBlocks">
+                    <div class="secTitle">Next:</div>
+                </div>
+                <div class = "section controlSec">
+                    <div class="secTitle">Controls:</div>
+                    <div class="secContent pcVer">
+                        ⬆️ hard drop
+                        <br>⬇️ soft drop
+                        <br>⬅️ move left
+                        <br>➡️ move right
+                        <br><b>Space</b> Rotate
+                        <br><b>Z</b> Store piece
+                        <br><b>C</b> Pause
+                    </div>
+                    <div class="secContent mobVer">
+                        ⬆️ hard drop
+                        <br>⬇️ soft drop
+                        <br>⬅️ move left
+                        <br>➡️ move right
+                        <br><b>A</b> Rotate
+                        <br><b>B</b> Store piece
+                        <br><b>X</b> Pause
+                    </div>
+                </div>
+            </div>
+            <div class="centerArea">
+                <div class = "gameField"></div>
+                <div class="endingPopUp">
+                    <div class="gameEnd" data-for="popupTitle">You lose!</div>
+                    <div class="restart startPlay" data-for="popupBtn">⏎ RESTART</div>
+                </div>
+                <div class="pauseNoti">Paused</div>
+            </div>
+            <div class="rightPanel">
+                <div class="section scoreBoard">
+                    <div class="secTitle">Score:</div>
+                    <div class="secContent" data-for="score"></div>
+                </div>
+                <div class="section speedInfo">
+                    <div class="secTitle">Speed:</div>
+                    <div class="secContent" data-for="speed"></div>
+                </div>
+                <div class="section levelInfo">
+                    <div class="secTitle">Level:</div>
+                    <div class="secContent" data-for="level"></div>
+                </div>
+                <div class="section scoreRanking">
+                    <div class="secTitle">High scores:</div>
+                    <ol class="secContent" data-for="ranking"></ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function(){
+            gameSetting.initGame();
+        });
+    </script>
+
+</body>
+</html>
