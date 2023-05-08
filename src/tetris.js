@@ -83,7 +83,10 @@ $(function(){
 	var initSpeed = 1;
 	var blockMaps = [];
 	var paused = false;
+	var blockStock = [];
 	var usingMobile = navigator.userAgent.match(/(Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i);
+	var nextFrameTimePointer;
+	var btnPressingTimePointer;
 
 	gameSetting.initGame = function(){
 		drawTitle();
@@ -95,7 +98,7 @@ $(function(){
 			position: GameControl.Position.BottomRight,
 			buttons: {
 				common: {
-					num: 3
+					num: 4
 				}
 			},
 			mobileOnly: true
@@ -151,19 +154,14 @@ $(function(){
 		initSpeed = curSpeed;
 		$('#cbId').width(0);
 	
-	
-		//create blocks array
-		gameSetting.stock = [];
-		for(var i = 0; i <= gameSetting.MaxPreviewBlock; i++){
-			gameSetting.stock.push(self.crypto.getRandomValues(randomValArr)[0] % 7);
-		}
-		currentBlockType = gameSetting.stock[0];
-		initBlock(gameSetting.stock.shift());
-		for(var i = 0; i < gameSetting.stock.length; i++){
-			$('.storeArea .displayBlock.t' + (gameSetting.stock[i] + 1)).clone().appendTo( ".nextBlocks" );
+		blockStock = randomGen();
+		currentBlockType = blockStock[0];
+		initBlock(blockStock.shift());
+		for(var i = 0; i < gameSetting.MaxPreviewBlock; i++){
+			$('.storeArea .displayBlock.t' + (blockStock[i] + 1)).clone().appendTo( ".nextBlocks" );
 		}
 		$('.nextBlocks .displayBlock').show();
-		setTimeout(nextFrame, parseInt(1000/curSpeed));
+		nextFrameTimePointer = setTimeout(nextFrame, parseInt(1000/curSpeed));
 	}
 	
 	function initBlock(bType) {
@@ -173,10 +171,10 @@ $(function(){
 		}
 		var groundCenter = parseInt(gameSetting.fieldWidth / 2);
 		var boxColor = defaultBlocks['b' + bType].color;
-		var b1 = $('<div class="boxPart falling ' + boxColor + '" ri="0" id="b' + (gameSetting.blockId++) + '"><div class="innerBox"></div></div>');
-		var b2 = $('<div class="boxPart falling ' + boxColor + '" ri="0" id="b' + (gameSetting.blockId++) + '"><div class="innerBox"></div></div>');
-		var b3 = $('<div class="boxPart falling ' + boxColor + '" ri="0" id="b' + (gameSetting.blockId++) + '"><div class="innerBox"></div></div>');
-		var b4 = $('<div class="boxPart falling ' + boxColor + '" ri="0" id="b' + (gameSetting.blockId++) + '"><div class="innerBox"></div></div>');
+		var b1 = $('<div class="boxPart falling ' + boxColor + '" id="b' + (gameSetting.blockId++) + '"><div class="innerBox"></div></div>');
+		var b2 = $('<div class="boxPart falling ' + boxColor + '" id="b' + (gameSetting.blockId++) + '"><div class="innerBox"></div></div>');
+		var b3 = $('<div class="boxPart falling ' + boxColor + '" id="b' + (gameSetting.blockId++) + '"><div class="innerBox"></div></div>');
+		var b4 = $('<div class="boxPart falling ' + boxColor + '" id="b' + (gameSetting.blockId++) + '"><div class="innerBox"></div></div>');
 		//offsets
 		var xOffset = 0;
 		var yOffset = 0; //- gameSetting.blockSize;
@@ -253,9 +251,6 @@ $(function(){
 	}
 	
 	function nextFrame() {
-		if (paused) {
-			return;
-		}
 		//change positions for falling blocks
 		var fallingBlocks = $('.boxPart.falling');
 		var blockTouched = detectTouch()[0];
@@ -273,13 +268,14 @@ $(function(){
 					upDateScore(gameSetting.scores[rowsNum - 1]);
 					checkAndUpdateLevel();
 				}
-				//creatNewBlock
-				currentBlockType = gameSetting.stock[0];
-				initBlock(gameSetting.stock.shift());
 				//refill blocks array if size < 4
-				gameSetting.stock.push(self.crypto.getRandomValues(randomValArr)[0] % 7);
+				if (blockStock.length < 4) {
+					blockStock = blockStock.concat(randomGen());
+				}
+				currentBlockType = blockStock[0];
+				initBlock(blockStock.shift());
 				$('.nextBlocks .displayBlock').eq(0).remove();
-				$('.storeArea .displayBlock.t' + (gameSetting.stock[gameSetting.stock.length-1] + 1)).clone().appendTo( ".nextBlocks" );
+				$('.storeArea .displayBlock.t' + (blockStock[2] + 1)).clone().appendTo( ".nextBlocks" );
 				$('.nextBlocks .displayBlock').show();
 				//release lock
 				gameSetting.lockStore = 0;
@@ -289,7 +285,7 @@ $(function(){
 		}
 		if(!gameSetting.gameEnd){
 			gameSetting.keyAccept = true;
-			setTimeout(nextFrame, parseInt(1000/curSpeed));
+			nextFrameTimePointer = setTimeout(nextFrame, parseInt(1000/curSpeed));
 		}else{
 			gameover();
 		}
@@ -385,98 +381,89 @@ $(function(){
 		$('.endingPopUp').show();
 		scoreHistory.push(score);
 		updateScoreRanking();
+		clearTimeout(nextFrameTimePointer);
 	}
-	
-	function rotateBlock() {
-		//default rotate counter clockwise
+
+	function rotateBlock(direction="CCw") {
 		//bTypes: 0:line, 1:square, 2:T shape, 3:L shape, 4:reverse L shape, 5:Z shape, 6:reverse Z shape
-		var fallingBlocks = $('.boxPart.falling');
-		if(currentBlockType !== 1){
-			//blocks other than square
-			var centerBlock, xC, yC, rotateT, xOffSet = 0, yOffSet = 0, touched = false, tmpPos = [], yOffset2 = 0;
-			switch (currentBlockType) {
-				case 0:
-					//center:b3
-					centerBlock = $('.boxPart.falling').eq(2);
-					break;
-				case 2:
-					//center:b3
-					centerBlock = $('.boxPart.falling').eq(2);
-					break;
-				case 3:
-					//center:b2
-					centerBlock = $('.boxPart.falling').eq(1);
-					break;
-				case 4:
-					//center:b3
-					centerBlock = $('.boxPart.falling').eq(2);
-					break;
-				case 5:
-					//center:b2
-					centerBlock = $('.boxPart.falling').eq(1);
-					break;
-				case 6:
-					//center:b1
-					centerBlock = $('.boxPart.falling').eq(0);
-					break;
+		if (currentBlockType === 1) {
+			return;
+		}
+		//blocks other than square
+		let fallingBlocks = $('.boxPart.falling');
+		let centerBlock, touched = false, tmpPos = [];
+		switch (currentBlockType) {
+			case 0:
+				//center:b2
+				centerBlock = $('.boxPart.falling').eq(1);
+				break;
+			case 2:
+				//center:b2
+				centerBlock = $('.boxPart.falling').eq(1);
+				break;
+			case 3:
+				//center:b2
+				centerBlock = $('.boxPart.falling').eq(1);
+				break;
+			case 4:
+				//center:b2
+				centerBlock = $('.boxPart.falling').eq(1);
+				break;
+			case 5:
+				//center:b2
+				centerBlock = $('.boxPart.falling').eq(1);
+				break;
+			case 6:
+				//center:b1
+				centerBlock = $('.boxPart.falling').eq(0);
+				break;
+		}
+		
+		let centerPos = centerBlock.position();
+		let cos = 0; //Math.cos(90 or -90);
+		let sin = (direction === "Cw" ? 1 : -1);//Math.sin(90 or -90);
+		let x0 = Math.round(centerPos.left) + gameSetting.blockSize / 2;
+		let y0 = Math.round(centerPos.top) + gameSetting.blockSize / 2;
+		
+		let xOffset2 = 0;//move blocks if touch wall when rotate
+		fallingBlocks.each(function () {
+			let position = $(this).position();
+			let x = Math.round(position.left) + gameSetting.blockSize / 2;
+			let y = Math.round(position.top) + gameSetting.blockSize / 2;
+			let resultX = cos * (x - x0) - sin * (y - y0) + x0 - gameSetting.blockSize / 2;
+			let resultY = sin * (x - x0) + cos * (y - y0) + y0 - gameSetting.blockSize / 2;
+			let mapX = resultX / gameSetting.blockSize, mapY = resultY / gameSetting.blockSize;
+			let maxX = gameSetting.fieldWidth / gameSetting.blockSize - 1;//map width in unit of block size
+			let maxY = gameSetting.fieldHeight / gameSetting.blockSize - 1;
+			if(blockMaps[mapY] && blockMaps[mapY][mapX]){
+				touched = true;
+			} 
+			else if (mapY > maxY) {
+				//touch the bottom
+				touched = true;
 			}
-			rotateT = parseInt(centerBlock.attr('ri'));
-			switch (rotateT) {
-				case 0:
-					yOffSet = gameSetting.blockSize;
-					break;
-				case 1:
-					xOffSet = gameSetting.blockSize;
-					yOffSet = gameSetting.blockSize;
-					break;
-				case 2:
-					xOffSet = gameSetting.blockSize;
-					break;
-				case 3:
-					break;
-			}
-			yOffset2 = -gameSetting.blockSize;
-			xC = centerBlock.position().left + xOffSet;
-			yC = centerBlock.position().top + yOffSet;
-			var xOffset2 = 0;//move blocks if touch wall when rotate
-			fallingBlocks.each(function () {
-				var resultX = $(this).position().top + xC - yC;
-				var resultY = yC + xC - $(this).position().left + yOffset2;
-				// var nextPo = resultX + ',' + resultY;
-				var mapX = resultX / gameSetting.blockSize, mapY = resultY / gameSetting.blockSize;
-				var maxX = gameSetting.fieldWidth / gameSetting.blockSize - 1;//map width in unit of block size
-				var maxY = gameSetting.fieldHeight / gameSetting.blockSize - 1;
-				if(blockMaps[mapY] && blockMaps[mapY][mapX]){
-					touched = true;
-				} 
-				else if (mapY > maxY) {
-					//touch the bottom
-					touched = true;
-				}
-				else{
-					if(mapX < 0){
-						//touch the left wall
-						var xOffsetTmp = Math.abs(mapX) * gameSetting.blockSize;
-						if(xOffset2 < xOffsetTmp){
-							xOffset2 = xOffsetTmp;
-						}
-					}else if(mapX > maxX){
-						//touch the right wall
-						var xOffsetTmp = (maxX - mapX) * gameSetting.blockSize;
-						if(xOffset2 > xOffsetTmp){
-							xOffset2 = xOffsetTmp;
-						}
+			else{
+				if(mapX < 0){
+					//touch the left wall
+					let xOffsetTmp = Math.abs(mapX) * gameSetting.blockSize;
+					if(xOffset2 < xOffsetTmp){
+						xOffset2 = xOffsetTmp;
 					}
-					tmpPos.push([resultX, resultY]);
+				}else if(mapX > maxX){
+					//touch the right wall
+					let xOffsetTmp = (maxX - mapX) * gameSetting.blockSize;
+					if(xOffset2 > xOffsetTmp){
+						xOffset2 = xOffsetTmp;
+					}
 				}
-			});
-			if(!touched){
-				tmpPos.forEach(function (value,index) {
-					fallingBlocks.eq(index).css({'left': value[0] + xOffset2, 'top': value[1]});
-				});
-				rotateT = (rotateT + 1) % 4;
-				centerBlock.attr('ri', rotateT);
+				tmpPos.push([resultX, resultY]);
 			}
+		});
+
+		if(!touched){
+			tmpPos.forEach(function (value,index) {
+				fallingBlocks.eq(index).css({'left': value[0] + xOffset2, 'top': value[1]});
+			});
 		}
 	}
 	
@@ -603,22 +590,25 @@ $(function(){
 			if (gameSetting.gameEnd) {
 				return;
 			}
+			clearInterval(btnPressingTimePointer);
 			paused = !paused;
 			gameSetting.gameField.parent().toggleClass('gamePaused', paused);
 			if (!paused) {
-				setTimeout(nextFrame, parseInt(1000/curSpeed));
+				nextFrameTimePointer = setTimeout(nextFrame, parseInt(1000/curSpeed));
+			} else {
+				clearTimeout(nextFrameTimePointer);
 			}
 		}
 
-		// var gameField = gameSetting.gameField;
 		$(document).off('keyup').keyup(function(e){
-			if (e.keyCode == 67) {
+			if (e.keyCode == 87) {
+				// 'W'
 				pasueGame();
 			}
 		});
 
 		$(document).off('keydown').keydown(function(evt){
-			// console.log(evt.keyCode);
+			console.log(evt.keyCode);
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
 				//gameSetting.keyAccept = false;
 				if(evt.keyCode == 37){
@@ -637,11 +627,16 @@ $(function(){
 					//down arrow
 					move('down');
 				}
-				else if(evt.keyCode == 32){
-					//rotate blocks (Space)
-					rotateBlock();
+				else if(evt.keyCode == 65){
+					// 'A'
+					rotateBlock('CCw');
 				}
-				else if(evt.keyCode == 90){
+				else if(evt.keyCode == 68){
+					// 'D'
+					rotateBlock('Cw');
+				}
+				else if(evt.keyCode == 83){
+					// 'S'
 					storeBlock();
 				}
 			}
@@ -667,35 +662,55 @@ $(function(){
 			}
 		});
 
-		GameControl.bindKeyPressEvent(GameControl.Keys.Down, function(e){
+		function cancelBtnPressingEvent(e) {
 			e.stopPropagation();
 			e.preventDefault();
-			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
-				move('down');
-			}
-		});
+			clearInterval(btnPressingTimePointer);
+		}
 
-		GameControl.bindKeyPressEvent(GameControl.Keys.Left, function(e){
-			e.stopPropagation();
-			e.preventDefault();
+		function moveInMob(direction) {
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
-				move('left');
+				move(direction);
+				btnPressingTimePointer = setTimeout(function(){
+					btnPressingTimePointer = setInterval(function(){
+						move(direction);
+					}, 80);
+				}, 500);
 			}
-		});
+		}
 
-		GameControl.bindKeyPressEvent(GameControl.Keys.Right, function(e){
-			e.stopPropagation();
-			e.preventDefault();
-			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
-				move('right');
-			}
-		});
+		GameControl.bindKeyPressEvent(GameControl.Keys.Down, 
+			function(e){
+				e.stopPropagation();
+				e.preventDefault();
+				moveInMob('down');
+			}, 
+			cancelBtnPressingEvent
+		);
+
+		GameControl.bindKeyPressEvent(GameControl.Keys.Left,
+			function(e){
+				e.stopPropagation();
+				e.preventDefault();
+				moveInMob('left');
+			}, 
+			cancelBtnPressingEvent
+		);
+
+		GameControl.bindKeyPressEvent(GameControl.Keys.Right,
+			function(e){
+				e.stopPropagation();
+				e.preventDefault();
+				moveInMob('right');
+			}, 
+			cancelBtnPressingEvent
+		);
 
 		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_0, function(e){
 			e.stopPropagation();
 			e.preventDefault();
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
-				rotateBlock();
+				rotateBlock('Cw');
 			}
 		});
 
@@ -703,11 +718,19 @@ $(function(){
 			e.stopPropagation();
 			e.preventDefault();
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
-				storeBlock();
+				rotateBlock('CCw');
 			}
 		});
 
 		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_2, function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
+				storeBlock();
+			}
+		});
+
+		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_3, function(e){
 			e.stopPropagation();
 			e.preventDefault();
 			pasueGame();
@@ -735,11 +758,11 @@ $(function(){
 				storedBlocksType = currentBlockType;
 				fallingBlocks.remove();
 				//init blocks
-				initBlock(gameSetting.stock.shift());
+				initBlock(blockStock.shift());
 				//refill blocks array if size < 4
-				gameSetting.stock.push(self.crypto.getRandomValues(randomValArr)[0] % 7);
+				blockStock.push(self.crypto.getRandomValues(randomValArr)[0] % 7);
 				$('.nextBlocks .displayBlock').eq(0).remove();
-				$('.storeArea .displayBlock.t' + (gameSetting.stock[gameSetting.stock.length-1] + 1)).clone().appendTo( ".nextBlocks" );
+				$('.storeArea .displayBlock.t' + (blockStock[blockStock.length-1] + 1)).clone().appendTo( ".nextBlocks" );
 				$('.nextBlocks .displayBlock').show();
 			}
 		}
@@ -765,5 +788,17 @@ $(function(){
 			initSpeed = curSpeed;
 			$('[data-for="level"]').text(curlevel);
 		}
+	}
+
+	function randomGen() {
+		let allTypes = [0, 1, 2, 3, 4, 5, 6];
+		let result = [];
+		for (var i = 7; i > 1; i--) {
+			let randomNum = self.crypto.getRandomValues(randomValArr)[0] % i;
+			result.push(allTypes[randomNum]);
+			allTypes.splice(randomNum, 1);
+		}
+		result.push(allTypes[0]);
+		return result;
 	}
 });

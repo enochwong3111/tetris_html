@@ -28,7 +28,7 @@ body {
 }
 
 .rightPanel .section {
-    min-height: 70px;
+    min-height: 76px;
 }
 
 .controlSec .secContent {
@@ -51,6 +51,7 @@ body {
     font-size: 19px;
     margin: 5px;
     line-height: 30px;
+    text-align: right;
 }
 
 .field .section:first-child{
