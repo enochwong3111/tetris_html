@@ -608,7 +608,7 @@ $(function(){
 		});
 
 		$(document).off('keydown').keydown(function(evt){
-			console.log(evt.keyCode);
+			// console.log(evt.keyCode);
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
 				//gameSetting.keyAccept = false;
 				if(evt.keyCode == 37){
