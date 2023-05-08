@@ -594,6 +594,7 @@ $(function(){
 			paused = !paused;
 			gameSetting.gameField.parent().toggleClass('gamePaused', paused);
 			if (!paused) {
+				clearTimeout(nextFrameTimePointer);
 				nextFrameTimePointer = setTimeout(nextFrame, parseInt(1000/curSpeed));
 			} else {
 				clearTimeout(nextFrameTimePointer);
@@ -669,6 +670,7 @@ $(function(){
 		}
 
 		function moveInMob(direction) {
+			clearInterval(btnPressingTimePointer);
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
 				move(direction);
 				btnPressingTimePointer = setTimeout(function(){
