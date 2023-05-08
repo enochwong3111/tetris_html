@@ -708,7 +708,7 @@ $(function(){
 			cancelBtnPressingEvent
 		);
 
-		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_0, function(e){
+		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_2, function(e){
 			e.stopPropagation();
 			e.preventDefault();
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
@@ -716,7 +716,7 @@ $(function(){
 			}
 		});
 
-		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_1, function(e){
+		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_0, function(e){
 			e.stopPropagation();
 			e.preventDefault();
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
@@ -724,7 +724,7 @@ $(function(){
 			}
 		});
 
-		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_2, function(e){
+		GameControl.bindKeyPressEvent(GameControl.Keys.Btn_1, function(e){
 			e.stopPropagation();
 			e.preventDefault();
 			if(!paused && gameSetting.keyAccept && !gameSetting.forceDown){
